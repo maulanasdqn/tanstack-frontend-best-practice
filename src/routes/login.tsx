@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useForm, z } from '@/libs/tanstack-form'
 import { TextField } from '@/components/ui/input-fields'
+import { Button, Alert } from '@/components/ui'
 import { useLogin } from '@/apis/auth'
 import { GuestRoute } from '@/components/auth'
 
@@ -63,9 +64,7 @@ function LoginPage() {
             <div className="space-y-4 rounded-md">
               <form.Field
                 name="email"
-                validators={{
-                  onChange: loginSchema.shape.email,
-                }}
+                validators={{ onChange: loginSchema.shape.email }}
               >
                 {(field) => (
                   <TextField
@@ -73,16 +72,13 @@ function LoginPage() {
                     label="Email address"
                     type="email"
                     placeholder="you@example.com"
-                    className="block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
                   />
                 )}
               </form.Field>
 
               <form.Field
                 name="password"
-                validators={{
-                  onChange: loginSchema.shape.password,
-                }}
+                validators={{ onChange: loginSchema.shape.password }}
               >
                 {(field) => (
                   <TextField
@@ -90,7 +86,6 @@ function LoginPage() {
                     label="Password"
                     type="password"
                     placeholder="Enter your password"
-                    className="block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
                   />
                 )}
               </form.Field>
@@ -108,22 +103,20 @@ function LoginPage() {
             </div>
 
             {loginMutation.isError && (
-              <div className="rounded-md bg-red-50 p-4">
-                <p className="text-sm text-red-700">
-                  {loginMutation.error instanceof Error
-                    ? loginMutation.error.message
-                    : 'Login failed. Please check your credentials.'}
-                </p>
-              </div>
+              <Alert variant="error">
+                {loginMutation.error instanceof Error
+                  ? loginMutation.error.message
+                  : 'Login failed. Please check your credentials.'}
+              </Alert>
             )}
 
-            <button
+            <Button
               type="submit"
-              disabled={loginMutation.isPending}
-              className="group relative flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50"
+              isLoading={loginMutation.isPending}
+              className="w-full"
             >
-              {loginMutation.isPending ? 'Signing in...' : 'Sign in'}
-            </button>
+              Sign in
+            </Button>
           </form>
         </div>
       </div>

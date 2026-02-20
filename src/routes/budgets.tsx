@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { DashboardLayout } from '@/components/layout'
 import { useBudgets, type Budget } from '@/apis/budgets'
 import { BudgetForm, BudgetTable } from '@/components/features/budgets'
+import { Button, Card, DataState, PageHeader } from '@/components/ui'
 
 export const Route = createFileRoute('/budgets')({
   component: BudgetsPage,
@@ -23,15 +24,11 @@ function BudgetsPage() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900">Budgets</h1>
-          <button
-            onClick={formState.open ? handleClose : handleCreate}
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-500"
-          >
+        <PageHeader title="Budgets">
+          <Button onClick={formState.open ? handleClose : handleCreate}>
             {formState.open ? 'Cancel' : 'Add Budget'}
-          </button>
-        </div>
+          </Button>
+        </PageHeader>
 
         {formState.open && (
           <BudgetForm
@@ -41,19 +38,18 @@ function BudgetsPage() {
           />
         )}
 
-        <div className="rounded-lg bg-white shadow">
-          {isLoading ? (
-            <p className="p-6 text-gray-500">Loading budgets...</p>
-          ) : error ? (
-            <p className="p-6 text-red-500">Error loading budgets</p>
-          ) : data?.data.length === 0 ? (
-            <p className="p-6 text-gray-500">
-              No budgets yet. Create your first budget!
-            </p>
-          ) : (
-            <BudgetTable budgets={data?.data ?? []} onEdit={handleEdit} />
-          )}
-        </div>
+        <Card padding={false}>
+          <DataState
+            data={data?.data}
+            isLoading={isLoading}
+            error={error}
+            loadingText="Loading budgets..."
+            errorText="Error loading budgets"
+            emptyText="No budgets yet. Create your first budget!"
+          >
+            {(budgets) => <BudgetTable budgets={budgets} onEdit={handleEdit} />}
+          </DataState>
+        </Card>
       </div>
     </DashboardLayout>
   )

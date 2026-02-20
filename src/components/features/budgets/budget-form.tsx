@@ -1,5 +1,6 @@
 import { useForm, z } from '@/libs/tanstack-form'
 import { TextField, SelectField } from '@/components/ui/input-fields'
+import { Button, Card, CardHeader } from '@/components/ui'
 import {
   useCreateBudget,
   useUpdateBudget,
@@ -69,10 +70,8 @@ export function BudgetForm({ budget, onSuccess, onCancel }: BudgetFormProps) {
   const isPending = createMutation.isPending || updateMutation.isPending
 
   return (
-    <div className="rounded-lg bg-white p-6 shadow">
-      <h2 className="mb-4 text-lg font-semibold">
-        {isEditing ? 'Edit Budget' : 'Create New Budget'}
-      </h2>
+    <Card>
+      <CardHeader title={isEditing ? 'Edit Budget' : 'Create New Budget'} />
       <form
         onSubmit={(e) => {
           e.preventDefault()
@@ -89,7 +88,6 @@ export function BudgetForm({ budget, onSuccess, onCancel }: BudgetFormProps) {
               field={field}
               label="Category"
               placeholder="Food, Entertainment, etc."
-              className="block w-full rounded-md border border-gray-300 px-3 py-2"
             />
           )}
         </form.Field>
@@ -104,7 +102,6 @@ export function BudgetForm({ budget, onSuccess, onCancel }: BudgetFormProps) {
               label="Budget Amount"
               type="number"
               placeholder="0.00"
-              className="block w-full rounded-md border border-gray-300 px-3 py-2"
             />
           )}
         </form.Field>
@@ -117,7 +114,6 @@ export function BudgetForm({ budget, onSuccess, onCancel }: BudgetFormProps) {
                   field={field}
                   label="Period"
                   options={budgetPeriodOptions}
-                  className="block w-full rounded-md border border-gray-300 px-3 py-2"
                 />
               )}
             </form.Field>
@@ -129,7 +125,6 @@ export function BudgetForm({ budget, onSuccess, onCancel }: BudgetFormProps) {
                   label="Start Date"
                   type="text"
                   placeholder="YYYY-MM-DD"
-                  className="block w-full rounded-md border border-gray-300 px-3 py-2"
                 />
               )}
             </form.Field>
@@ -141,7 +136,6 @@ export function BudgetForm({ budget, onSuccess, onCancel }: BudgetFormProps) {
                   label="End Date (Optional)"
                   type="text"
                   placeholder="YYYY-MM-DD"
-                  className="block w-full rounded-md border border-gray-300 px-3 py-2"
                 />
               )}
             </form.Field>
@@ -149,26 +143,14 @@ export function BudgetForm({ budget, onSuccess, onCancel }: BudgetFormProps) {
         )}
 
         <div className="flex gap-2 md:col-span-2">
-          <button
-            type="submit"
-            disabled={isPending}
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-500 disabled:opacity-50"
-          >
-            {isPending
-              ? 'Saving...'
-              : isEditing
-                ? 'Save Changes'
-                : 'Create Budget'}
-          </button>
-          <button
-            type="button"
-            onClick={onCancel}
-            className="rounded-md border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
-          >
+          <Button type="submit" isLoading={isPending}>
+            {isEditing ? 'Save Changes' : 'Create Budget'}
+          </Button>
+          <Button type="button" variant="secondary" onClick={onCancel}>
             Cancel
-          </button>
+          </Button>
         </div>
       </form>
-    </div>
+    </Card>
   )
 }

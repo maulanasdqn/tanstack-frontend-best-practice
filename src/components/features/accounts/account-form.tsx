@@ -1,5 +1,6 @@
 import { useForm, z } from '@/libs/tanstack-form'
 import { TextField, SelectField } from '@/components/ui/input-fields'
+import { Button, Card, CardHeader } from '@/components/ui'
 import {
   useCreateAccount,
   useUpdateAccount,
@@ -63,10 +64,8 @@ export function AccountForm({
   const isPending = createMutation.isPending || updateMutation.isPending
 
   return (
-    <div className="rounded-lg bg-white p-6 shadow">
-      <h2 className="mb-4 text-lg font-semibold">
-        {isEditing ? 'Edit Account' : 'Create New Account'}
-      </h2>
+    <Card>
+      <CardHeader title={isEditing ? 'Edit Account' : 'Create New Account'} />
       <form
         onSubmit={(e) => {
           e.preventDefault()
@@ -83,7 +82,6 @@ export function AccountForm({
               field={field}
               label="Account Name"
               placeholder="My Savings"
-              className="block w-full rounded-md border border-gray-300 px-3 py-2"
             />
           )}
         </form.Field>
@@ -96,7 +94,6 @@ export function AccountForm({
                   field={field}
                   label="Account Type"
                   options={accountTypeOptions}
-                  className="block w-full rounded-md border border-gray-300 px-3 py-2"
                 />
               )}
             </form.Field>
@@ -108,7 +105,6 @@ export function AccountForm({
                   label="Initial Balance"
                   type="number"
                   placeholder="0.00"
-                  className="block w-full rounded-md border border-gray-300 px-3 py-2"
                 />
               )}
             </form.Field>
@@ -118,38 +114,21 @@ export function AccountForm({
               validators={{ onChange: accountSchema.shape.currency }}
             >
               {(field) => (
-                <TextField
-                  field={field}
-                  label="Currency"
-                  placeholder="USD"
-                  className="block w-full rounded-md border border-gray-300 px-3 py-2"
-                />
+                <TextField field={field} label="Currency" placeholder="USD" />
               )}
             </form.Field>
           </>
         )}
 
         <div className="flex gap-2 md:col-span-2">
-          <button
-            type="submit"
-            disabled={isPending}
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-500 disabled:opacity-50"
-          >
-            {isPending
-              ? 'Saving...'
-              : isEditing
-                ? 'Save Changes'
-                : 'Create Account'}
-          </button>
-          <button
-            type="button"
-            onClick={onCancel}
-            className="rounded-md border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
-          >
+          <Button type="submit" isLoading={isPending}>
+            {isEditing ? 'Save Changes' : 'Create Account'}
+          </Button>
+          <Button type="button" variant="secondary" onClick={onCancel}>
             Cancel
-          </button>
+          </Button>
         </div>
       </form>
-    </div>
+    </Card>
   )
 }

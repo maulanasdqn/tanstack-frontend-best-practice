@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useForm, z } from '@/libs/tanstack-form'
 import { TextField } from '@/components/ui/input-fields'
+import { Button, Alert, Card } from '@/components/ui'
 import { useRegister } from '@/apis/auth'
 import { GuestRoute } from '@/components/auth'
 import { useState } from 'react'
@@ -43,20 +44,15 @@ function RegisterPage() {
       <GuestRoute>
         <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
           <div className="w-full max-w-md space-y-8 text-center">
-            <div className="rounded-md bg-green-50 p-6">
-              <h2 className="text-xl font-semibold text-green-800">
-                Registration Successful!
-              </h2>
-              <p className="mt-2 text-green-700">
-                Please check your email to verify your account.
-              </p>
-              <button
-                onClick={() => navigate({ to: '/login' })}
-                className="mt-4 rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-500"
-              >
+            <Card>
+              <Alert variant="success" className="mb-4">
+                Registration Successful! Please check your email to verify your
+                account.
+              </Alert>
+              <Button onClick={() => navigate({ to: '/login' })}>
                 Go to Login
-              </button>
-            </div>
+              </Button>
+            </Card>
           </div>
         </div>
       </GuestRoute>
@@ -97,7 +93,6 @@ function RegisterPage() {
                       field={field}
                       label="First name"
                       placeholder="John"
-                      className="block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
                     />
                   )}
                 </form.Field>
@@ -108,7 +103,6 @@ function RegisterPage() {
                       field={field}
                       label="Last name"
                       placeholder="Doe"
-                      className="block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
                     />
                   )}
                 </form.Field>
@@ -116,9 +110,7 @@ function RegisterPage() {
 
               <form.Field
                 name="email"
-                validators={{
-                  onChange: registerSchema.shape.email,
-                }}
+                validators={{ onChange: registerSchema.shape.email }}
               >
                 {(field) => (
                   <TextField
@@ -126,16 +118,13 @@ function RegisterPage() {
                     label="Email address"
                     type="email"
                     placeholder="you@example.com"
-                    className="block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
                   />
                 )}
               </form.Field>
 
               <form.Field
                 name="password"
-                validators={{
-                  onChange: registerSchema.shape.password,
-                }}
+                validators={{ onChange: registerSchema.shape.password }}
               >
                 {(field) => (
                   <TextField
@@ -143,31 +132,26 @@ function RegisterPage() {
                     label="Password"
                     type="password"
                     placeholder="At least 8 characters"
-                    className="block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
                   />
                 )}
               </form.Field>
             </div>
 
             {registerMutation.isError && (
-              <div className="rounded-md bg-red-50 p-4">
-                <p className="text-sm text-red-700">
-                  {registerMutation.error instanceof Error
-                    ? registerMutation.error.message
-                    : 'Registration failed. Please try again.'}
-                </p>
-              </div>
+              <Alert variant="error">
+                {registerMutation.error instanceof Error
+                  ? registerMutation.error.message
+                  : 'Registration failed. Please try again.'}
+              </Alert>
             )}
 
-            <button
+            <Button
               type="submit"
-              disabled={registerMutation.isPending}
-              className="group relative flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50"
+              isLoading={registerMutation.isPending}
+              className="w-full"
             >
-              {registerMutation.isPending
-                ? 'Creating account...'
-                : 'Create account'}
-            </button>
+              Create account
+            </Button>
           </form>
         </div>
       </div>

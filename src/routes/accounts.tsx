@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { DashboardLayout } from '@/components/layout'
 import { useAccounts, type Account } from '@/apis/accounts'
 import { AccountForm, AccountTable } from '@/components/features/accounts'
+import { Button, Card, DataState, PageHeader } from '@/components/ui'
 
 export const Route = createFileRoute('/accounts')({
   component: AccountsPage,
@@ -23,15 +24,11 @@ function AccountsPage() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900">Accounts</h1>
-          <button
-            onClick={formState.open ? handleClose : handleCreate}
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-500"
-          >
+        <PageHeader title="Accounts">
+          <Button onClick={formState.open ? handleClose : handleCreate}>
             {formState.open ? 'Cancel' : 'Add Account'}
-          </button>
-        </div>
+          </Button>
+        </PageHeader>
 
         {formState.open && (
           <AccountForm
@@ -41,19 +38,20 @@ function AccountsPage() {
           />
         )}
 
-        <div className="rounded-lg bg-white shadow">
-          {isLoading ? (
-            <p className="p-6 text-gray-500">Loading accounts...</p>
-          ) : error ? (
-            <p className="p-6 text-red-500">Error loading accounts</p>
-          ) : data?.data.length === 0 ? (
-            <p className="p-6 text-gray-500">
-              No accounts yet. Create your first account!
-            </p>
-          ) : (
-            <AccountTable accounts={data?.data ?? []} onEdit={handleEdit} />
-          )}
-        </div>
+        <Card padding={false}>
+          <DataState
+            data={data?.data}
+            isLoading={isLoading}
+            error={error}
+            loadingText="Loading accounts..."
+            errorText="Error loading accounts"
+            emptyText="No accounts yet. Create your first account!"
+          >
+            {(accounts) => (
+              <AccountTable accounts={accounts} onEdit={handleEdit} />
+            )}
+          </DataState>
+        </Card>
       </div>
     </DashboardLayout>
   )

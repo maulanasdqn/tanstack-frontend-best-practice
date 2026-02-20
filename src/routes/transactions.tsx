@@ -7,6 +7,7 @@ import {
   TransactionForm,
   TransactionTable,
 } from '@/components/features/transactions'
+import { Button, Card, DataState, PageHeader } from '@/components/ui'
 
 export const Route = createFileRoute('/transactions')({
   component: TransactionsPage,
@@ -35,15 +36,11 @@ function TransactionsPage() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900">Transactions</h1>
-          <button
-            onClick={formState.open ? handleClose : handleCreate}
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-500"
-          >
+        <PageHeader title="Transactions">
+          <Button onClick={formState.open ? handleClose : handleCreate}>
             {formState.open ? 'Cancel' : 'Add Transaction'}
-          </button>
-        </div>
+          </Button>
+        </PageHeader>
 
         {formState.open && (
           <TransactionForm
@@ -54,20 +51,23 @@ function TransactionsPage() {
           />
         )}
 
-        <div className="rounded-lg bg-white shadow">
-          {isLoading ? (
-            <p className="p-6 text-gray-500">Loading transactions...</p>
-          ) : error ? (
-            <p className="p-6 text-red-500">Error loading transactions</p>
-          ) : data?.data.length === 0 ? (
-            <p className="p-6 text-gray-500">No transactions yet.</p>
-          ) : (
-            <TransactionTable
-              transactions={data?.data ?? []}
-              onEdit={handleEdit}
-            />
-          )}
-        </div>
+        <Card padding={false}>
+          <DataState
+            data={data?.data}
+            isLoading={isLoading}
+            error={error}
+            loadingText="Loading transactions..."
+            errorText="Error loading transactions"
+            emptyText="No transactions yet."
+          >
+            {(transactions) => (
+              <TransactionTable
+                transactions={transactions}
+                onEdit={handleEdit}
+              />
+            )}
+          </DataState>
+        </Card>
       </div>
     </DashboardLayout>
   )

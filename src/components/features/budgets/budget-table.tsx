@@ -1,4 +1,14 @@
 import { useDeleteBudget, type Budget } from '@/apis/budgets'
+import {
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableHeader,
+  TableCell,
+  Badge,
+  Button,
+} from '@/components/ui'
 
 type BudgetTableProps = {
   budgets: Budget[]
@@ -12,79 +22,61 @@ export function BudgetTable({ budgets, onEdit }: BudgetTableProps) {
     dateStr ? new Date(dateStr).toLocaleDateString() : '-'
 
   return (
-    <table className="min-w-full divide-y divide-gray-200">
-      <thead className="bg-gray-50">
-        <tr>
-          <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-            Category
-          </th>
-          <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-            Amount
-          </th>
-          <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-            Period
-          </th>
-          <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-            Start Date
-          </th>
-          <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-            End Date
-          </th>
-          <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-            Status
-          </th>
-          <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
-            Actions
-          </th>
-        </tr>
-      </thead>
-      <tbody className="divide-y divide-gray-200 bg-white">
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableHeader>Category</TableHeader>
+          <TableHeader>Amount</TableHeader>
+          <TableHeader>Period</TableHeader>
+          <TableHeader>Start Date</TableHeader>
+          <TableHeader>End Date</TableHeader>
+          <TableHeader>Status</TableHeader>
+          <TableHeader align="right">Actions</TableHeader>
+        </TableRow>
+      </TableHead>
+      <TableBody>
         {budgets.map((budget) => (
-          <tr key={budget.id}>
-            <td className="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
+          <TableRow key={budget.id}>
+            <TableCell className="font-medium text-gray-900">
               {budget.category}
-            </td>
-            <td className="whitespace-nowrap px-6 py-4 text-gray-900">
+            </TableCell>
+            <TableCell className="text-gray-900">
               {formatCurrency(budget.amount)}
-            </td>
-            <td className="whitespace-nowrap px-6 py-4 text-gray-500">
-              {budget.period}
-            </td>
-            <td className="whitespace-nowrap px-6 py-4 text-gray-500">
+            </TableCell>
+            <TableCell className="text-gray-500">{budget.period}</TableCell>
+            <TableCell className="text-gray-500">
               {formatDate(budget.start_date)}
-            </td>
-            <td className="whitespace-nowrap px-6 py-4 text-gray-500">
+            </TableCell>
+            <TableCell className="text-gray-500">
               {formatDate(budget.end_date)}
-            </td>
-            <td className="whitespace-nowrap px-6 py-4">
-              <span
-                className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${
-                  budget.is_active
-                    ? 'bg-green-100 text-green-800'
-                    : 'bg-gray-100 text-gray-800'
-                }`}
-              >
+            </TableCell>
+            <TableCell>
+              <Badge variant={budget.is_active ? 'success' : 'default'}>
                 {budget.is_active ? 'Active' : 'Inactive'}
-              </span>
-            </td>
-            <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
-              <button
+              </Badge>
+            </TableCell>
+            <TableCell align="right">
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => onEdit(budget)}
-                className="mr-3 text-blue-600 hover:text-blue-900"
+                className="mr-2 text-blue-600 hover:text-blue-900"
               >
                 Edit
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => deleteMutation.mutate(budget.id)}
                 disabled={deleteMutation.isPending}
-                className="text-red-600 hover:text-red-900 disabled:opacity-50"
+                className="text-red-600 hover:text-red-900"
               >
                 Delete
-              </button>
-            </td>
-          </tr>
+              </Button>
+            </TableCell>
+          </TableRow>
         ))}
-      </tbody>
-    </table>
+      </TableBody>
+    </Table>
   )
 }

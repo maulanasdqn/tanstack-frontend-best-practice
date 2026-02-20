@@ -1,9 +1,25 @@
 import { useDeleteTransaction, type Transaction } from '@/apis/transactions'
+import {
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableHeader,
+  TableCell,
+  Badge,
+  Button,
+} from '@/components/ui'
 
 type TransactionTableProps = {
   transactions: Transaction[]
   onEdit: (transaction: Transaction) => void
 }
+
+const typeVariants = {
+  Income: 'success',
+  Expense: 'danger',
+  Transfer: 'info',
+} as const
 
 export function TransactionTable({
   transactions,
@@ -14,54 +30,37 @@ export function TransactionTable({
   const formatDate = (dateStr: string) => new Date(dateStr).toLocaleDateString()
 
   return (
-    <table className="min-w-full divide-y divide-gray-200">
-      <thead className="bg-gray-50">
-        <tr>
-          <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-            Date
-          </th>
-          <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-            Type
-          </th>
-          <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-            Category
-          </th>
-          <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-            Description
-          </th>
-          <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
-            Amount
-          </th>
-          <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
-            Actions
-          </th>
-        </tr>
-      </thead>
-      <tbody className="divide-y divide-gray-200 bg-white">
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableHeader>Date</TableHeader>
+          <TableHeader>Type</TableHeader>
+          <TableHeader>Category</TableHeader>
+          <TableHeader>Description</TableHeader>
+          <TableHeader align="right">Amount</TableHeader>
+          <TableHeader align="right">Actions</TableHeader>
+        </TableRow>
+      </TableHead>
+      <TableBody>
         {transactions.map((tx) => (
-          <tr key={tx.id}>
-            <td className="whitespace-nowrap px-6 py-4 text-gray-500">
+          <TableRow key={tx.id}>
+            <TableCell className="text-gray-500">
               {formatDate(tx.transaction_date)}
-            </td>
-            <td className="whitespace-nowrap px-6 py-4">
-              <span
-                className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${
-                  tx.transaction_type === 'Income'
-                    ? 'bg-green-100 text-green-800'
-                    : tx.transaction_type === 'Expense'
-                      ? 'bg-red-100 text-red-800'
-                      : 'bg-blue-100 text-blue-800'
-                }`}
-              >
+            </TableCell>
+            <TableCell>
+              <Badge variant={typeVariants[tx.transaction_type]}>
                 {tx.transaction_type}
-              </span>
-            </td>
-            <td className="whitespace-nowrap px-6 py-4 text-gray-500">
+              </Badge>
+            </TableCell>
+            <TableCell className="text-gray-500">
               {tx.category || '-'}
-            </td>
-            <td className="px-6 py-4 text-gray-500">{tx.description || '-'}</td>
-            <td
-              className={`whitespace-nowrap px-6 py-4 text-right font-semibold ${
+            </TableCell>
+            <TableCell className="text-gray-500">
+              {tx.description || '-'}
+            </TableCell>
+            <TableCell
+              align="right"
+              className={`font-semibold ${
                 tx.transaction_type === 'Income'
                   ? 'text-green-600'
                   : tx.transaction_type === 'Expense'
@@ -71,25 +70,29 @@ export function TransactionTable({
             >
               {tx.transaction_type === 'Income' ? '+' : '-'}
               {formatCurrency(tx.amount)}
-            </td>
-            <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
-              <button
+            </TableCell>
+            <TableCell align="right">
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => onEdit(tx)}
-                className="mr-3 text-blue-600 hover:text-blue-900"
+                className="mr-2 text-blue-600 hover:text-blue-900"
               >
                 Edit
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => deleteMutation.mutate(tx.id)}
                 disabled={deleteMutation.isPending}
-                className="text-red-600 hover:text-red-900 disabled:opacity-50"
+                className="text-red-600 hover:text-red-900"
               >
                 Delete
-              </button>
-            </td>
-          </tr>
+              </Button>
+            </TableCell>
+          </TableRow>
         ))}
-      </tbody>
-    </table>
+      </TableBody>
+    </Table>
   )
 }
