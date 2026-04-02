@@ -1,78 +1,74 @@
 import { apiClient } from '@/libs/axios'
-import type { SingleResponse, MessageOnlyResponse } from '../types'
+import type { TSingleResponse, TMessageOnlyResponse } from '../types'
 import type {
-  LoginRequest,
-  LoginData,
-  RegisterRequest,
-  RegisterData,
-  VerifyEmailRequest,
-  RefreshTokenRequest,
-  RefreshTokenData,
-  LogoutRequest,
-  RequestPasswordResetRequest,
-  ResetPasswordRequest,
-  ChangePasswordRequest,
-  Enable2FAData,
-  Verify2FARequest,
-  Disable2FARequest,
-  GoogleOAuthCallbackRequest,
-  GoogleOAuthData,
+  TLoginRequest,
+  TLoginData,
+  TRegisterRequest,
+  TRegisterData,
+  TVerifyEmailRequest,
+  TRefreshTokenRequest,
+  TRefreshTokenData,
+  TLogoutRequest,
+  TRequestPasswordResetRequest,
+  TResetPasswordRequest,
+  TChangePasswordRequest,
+  TEnable2FAData,
+  TVerify2FARequest,
+  TDisable2FARequest,
+  TGoogleOAuthCallbackRequest,
+  TGoogleOAuthData,
 } from './types'
 
 const AUTH_BASE = '/api/v1/auth'
 
 export const authService = {
-  // Authentication
-  login: (data: LoginRequest) =>
-    apiClient.post<SingleResponse<LoginData>>(`${AUTH_BASE}/login`, data),
+  login: (data: TLoginRequest) =>
+    apiClient.post<TSingleResponse<TLoginData>>(`${AUTH_BASE}/login`, data),
 
-  register: (data: RegisterRequest) =>
-    apiClient.post<SingleResponse<RegisterData>>(`${AUTH_BASE}/register`, data),
+  register: (data: TRegisterRequest) =>
+    apiClient.post<TSingleResponse<TRegisterData>>(`${AUTH_BASE}/register`, data),
 
-  verifyEmail: (data: VerifyEmailRequest) =>
-    apiClient.post<MessageOnlyResponse>(`${AUTH_BASE}/verify-email`, data),
+  verifyEmail: (data: TVerifyEmailRequest) =>
+    apiClient.post<TMessageOnlyResponse>(`${AUTH_BASE}/verify-email`, data),
 
-  refreshToken: (data: RefreshTokenRequest) =>
-    apiClient.post<SingleResponse<RefreshTokenData>>(
+  refreshToken: (data: TRefreshTokenRequest) =>
+    apiClient.post<TSingleResponse<TRefreshTokenData>>(
       `${AUTH_BASE}/refresh`,
       data
     ),
 
-  logout: (data: LogoutRequest) =>
-    apiClient.post<MessageOnlyResponse>(`${AUTH_BASE}/logout`, data),
+  logout: (data: TLogoutRequest) =>
+    apiClient.post<TMessageOnlyResponse>(`${AUTH_BASE}/logout`, data),
 
   logoutAll: () =>
-    apiClient.post<MessageOnlyResponse>(`${AUTH_BASE}/logout-all`),
+    apiClient.post<TMessageOnlyResponse>(`${AUTH_BASE}/logout-all`),
 
-  // Password Management
-  requestPasswordReset: (data: RequestPasswordResetRequest) =>
-    apiClient.post<MessageOnlyResponse>(
+  requestPasswordReset: (data: TRequestPasswordResetRequest) =>
+    apiClient.post<TMessageOnlyResponse>(
       `${AUTH_BASE}/request-password-reset`,
       data
     ),
 
-  resetPassword: (data: ResetPasswordRequest) =>
-    apiClient.post<MessageOnlyResponse>(`${AUTH_BASE}/reset-password`, data),
+  resetPassword: (data: TResetPasswordRequest) =>
+    apiClient.post<TMessageOnlyResponse>(`${AUTH_BASE}/reset-password`, data),
 
-  changePassword: (data: ChangePasswordRequest) =>
-    apiClient.post<MessageOnlyResponse>(`${AUTH_BASE}/change-password`, data),
+  changePassword: (data: TChangePasswordRequest) =>
+    apiClient.post<TMessageOnlyResponse>(`${AUTH_BASE}/change-password`, data),
 
-  // Two-Factor Authentication
   enable2FA: () =>
-    apiClient.post<SingleResponse<Enable2FAData>>(`${AUTH_BASE}/2fa/enable`),
+    apiClient.post<TSingleResponse<TEnable2FAData>>(`${AUTH_BASE}/2fa/enable`),
 
-  verify2FA: (data: Verify2FARequest) =>
-    apiClient.post<MessageOnlyResponse>(`${AUTH_BASE}/2fa/verify`, data),
+  verify2FA: (data: TVerify2FARequest) =>
+    apiClient.post<TMessageOnlyResponse>(`${AUTH_BASE}/2fa/verify`, data),
 
-  disable2FA: (data: Disable2FARequest) =>
-    apiClient.post<MessageOnlyResponse>(`${AUTH_BASE}/2fa/disable`, data),
+  disable2FA: (data: TDisable2FARequest) =>
+    apiClient.post<TMessageOnlyResponse>(`${AUTH_BASE}/2fa/disable`, data),
 
-  // Google OAuth
   getGoogleAuthUrl: () =>
-    apiClient.get<SingleResponse<{ url: string }>>(`${AUTH_BASE}/google`),
+    apiClient.get<TSingleResponse<{ url: string }>>(`${AUTH_BASE}/google`),
 
-  googleCallback: (data: GoogleOAuthCallbackRequest) =>
-    apiClient.post<SingleResponse<GoogleOAuthData>>(
+  googleCallback: (data: TGoogleOAuthCallbackRequest) =>
+    apiClient.post<TSingleResponse<TGoogleOAuthData>>(
       `${AUTH_BASE}/google/callback`,
       data
     ),

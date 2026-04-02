@@ -1,6 +1,4 @@
-// Auth API Types
-
-export type User = {
+export type TUser = {
   id: string
   email: string
   first_name: string | null
@@ -9,87 +7,86 @@ export type User = {
   updated_at: string
 }
 
-export type TokenData = {
+export type TTokenData = {
   access_token: string
   refresh_token: string
 }
 
-export type LoginData = {
-  token: TokenData
-  user: User
+export type TLoginData = {
+  token: TTokenData
+  user: TUser
   requires_2fa: boolean
 }
 
-export type RegisterData = {
+export type TRegisterData = {
   user_id: string
 }
 
-export type RefreshTokenData = {
+export type TRefreshTokenData = {
   access_token: string
 }
 
-export type Enable2FAData = {
+export type TEnable2FAData = {
   secret: string
   qr_code_svg: string
   provisioning_uri: string
 }
 
-export type GoogleOAuthData = {
+export type TGoogleOAuthData = {
   access_token: string
   refresh_token: string
   is_new_user: boolean
 }
 
-// Request Types
-export type LoginRequest = {
+export type TLoginRequest = {
   email: string
   password: string
 }
 
-export type RegisterRequest = {
+export type TRegisterRequest = {
   email: string
   password: string
   first_name?: string
   last_name?: string
 }
 
-export type VerifyEmailRequest = {
+export type TVerifyEmailRequest = {
   user_id: string
   otp_code: string
 }
 
-export type RefreshTokenRequest = {
+export type TRefreshTokenRequest = {
   refresh_token: string
 }
 
-export type LogoutRequest = {
+export type TLogoutRequest = {
   refresh_token: string
 }
 
-export type RequestPasswordResetRequest = {
+export type TRequestPasswordResetRequest = {
   email: string
 }
 
-export type ResetPasswordRequest = {
+export type TResetPasswordRequest = {
   token: string
   new_password: string
 }
 
-export type ChangePasswordRequest = {
+export type TChangePasswordRequest = {
   current_password: string
   new_password: string
 }
 
-export type Verify2FARequest = {
+export type TVerify2FARequest = {
   code: string
   enable_on_success?: boolean
 }
 
-export type Disable2FARequest = {
+export type TDisable2FARequest = {
   password: string
   code: string
 }
 
-export type GoogleOAuthCallbackRequest = {
+export type TGoogleOAuthCallbackRequest = {
   code: string
 }

@@ -1,13 +1,13 @@
-type ImageFormat = 'original' | 'webp' | 'avif'
+type TImageFormat = 'original' | 'webp' | 'avif'
 
-type AssetOptions = {
-  format?: ImageFormat
+type TAssetOptions = {
+  format?: TImageFormat
   compressed?: boolean
 }
 
 export function getAssetPath(
   assetPath: string,
-  options: AssetOptions = {}
+  options: TAssetOptions = {}
 ): string {
   const { format = 'original', compressed = true } = options
 

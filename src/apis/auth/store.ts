@@ -1,9 +1,9 @@
 import { Store } from '@tanstack/store'
 import { useStore } from '@tanstack/react-store'
-import type { User } from './types'
+import type { TUser } from './types'
 
-type AuthState = {
-  user: User | null
+type TAuthState = {
+  user: TUser | null
   accessToken: string | null
   refreshToken: string | null
   isAuthenticated: boolean
@@ -15,8 +15,7 @@ const STORAGE_KEYS = {
   USER: 'user',
 } as const
 
-// Initialize state from localStorage
-function getInitialState(): AuthState {
+function getInitialState(): TAuthState {
   if (typeof window === 'undefined') {
     return {
       user: null,
@@ -29,7 +28,7 @@ function getInitialState(): AuthState {
   const accessToken = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN)
   const refreshToken = localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN)
   const userStr = localStorage.getItem(STORAGE_KEYS.USER)
-  const user = userStr ? (JSON.parse(userStr) as User) : null
+  const user = userStr ? (JSON.parse(userStr) as TUser) : null
 
   return {
     user,
@@ -39,11 +38,10 @@ function getInitialState(): AuthState {
   }
 }
 
-export const authStore = new Store<AuthState>(getInitialState())
+export const authStore = new Store<TAuthState>(getInitialState())
 
-// Store actions
 export const authActions = {
-  setAuth: (user: User) => {
+  setAuth: (user: TUser) => {
     localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user))
     authStore.setState((state) => ({
       ...state,
@@ -55,7 +53,6 @@ export const authActions = {
   setTokens: (accessToken: string, refreshToken: string) => {
     localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, accessToken)
     localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, refreshToken)
-    // Also set legacy 'token' key for axios interceptor compatibility
     localStorage.setItem('token', accessToken)
     authStore.setState((state) => ({
       ...state,
@@ -88,7 +85,6 @@ export const authActions = {
   },
 }
 
-// React hook for using auth store
 export function useAuthStore() {
   const state = useStore(authStore)
 
@@ -101,7 +97,6 @@ export function useAuthStore() {
   }
 }
 
-// Selector hooks
 export function useUser() {
   return useStore(authStore, (state) => state.user)
 }

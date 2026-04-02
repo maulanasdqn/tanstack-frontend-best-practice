@@ -9,42 +9,28 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TransactionsRouteImport } from './routes/transactions'
-import { Route as RegisterRouteImport } from './routes/register'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as BudgetsRouteImport } from './routes/budgets'
-import { Route as AccountsRouteImport } from './routes/accounts'
+import { Route as PublicRouteImport } from './routes/_public'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedOrgSlugRouteImport } from './routes/_authenticated/$orgSlug'
+import { Route as PublicAuthRegisterRouteImport } from './routes/_public/auth/register'
+import { Route as PublicAuthLoginRouteImport } from './routes/_public/auth/login'
+import { Route as AuthenticatedOrgCreateRouteImport } from './routes/_authenticated/org/create'
+import { Route as AuthenticatedOrgSlugUsersRouteImport } from './routes/_authenticated/$orgSlug/users'
+import { Route as AuthenticatedOrgSlugSettingsRouteImport } from './routes/_authenticated/$orgSlug/settings'
+import { Route as AuthenticatedOrgSlugRolesRouteImport } from './routes/_authenticated/$orgSlug/roles'
+import { Route as AuthenticatedOrgSlugPermissionsRouteImport } from './routes/_authenticated/$orgSlug/permissions'
+import { Route as AuthenticatedOrgSlugMeRouteImport } from './routes/_authenticated/$orgSlug/me'
+import { Route as AuthenticatedOrgSlugDashboardRouteImport } from './routes/_authenticated/$orgSlug/dashboard'
+import { Route as AuthenticatedOrgSlugActivityRouteImport } from './routes/_authenticated/$orgSlug/activity'
+import { Route as AuthenticatedOrgSlugOrgSettingsRouteImport } from './routes/_authenticated/$orgSlug/org/settings'
 
-const TransactionsRoute = TransactionsRouteImport.update({
-  id: '/transactions',
-  path: '/transactions',
+const PublicRoute = PublicRouteImport.update({
+  id: '/_public',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RegisterRoute = RegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BudgetsRoute = BudgetsRouteImport.update({
-  id: '/budgets',
-  path: '/budgets',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AccountsRoute = AccountsRouteImport.update({
-  id: '/accounts',
-  path: '/accounts',
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -52,117 +38,192 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedOrgSlugRoute = AuthenticatedOrgSlugRouteImport.update({
+  id: '/$orgSlug',
+  path: '/$orgSlug',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const PublicAuthRegisterRoute = PublicAuthRegisterRouteImport.update({
+  id: '/auth/register',
+  path: '/auth/register',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicAuthLoginRoute = PublicAuthLoginRouteImport.update({
+  id: '/auth/login',
+  path: '/auth/login',
+  getParentRoute: () => PublicRoute,
+} as any)
+const AuthenticatedOrgCreateRoute = AuthenticatedOrgCreateRouteImport.update({
+  id: '/org/create',
+  path: '/org/create',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedOrgSlugUsersRoute =
+  AuthenticatedOrgSlugUsersRouteImport.update({
+    id: '/users',
+    path: '/users',
+    getParentRoute: () => AuthenticatedOrgSlugRoute,
+  } as any)
+const AuthenticatedOrgSlugSettingsRoute =
+  AuthenticatedOrgSlugSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedOrgSlugRoute,
+  } as any)
+const AuthenticatedOrgSlugRolesRoute =
+  AuthenticatedOrgSlugRolesRouteImport.update({
+    id: '/roles',
+    path: '/roles',
+    getParentRoute: () => AuthenticatedOrgSlugRoute,
+  } as any)
+const AuthenticatedOrgSlugPermissionsRoute =
+  AuthenticatedOrgSlugPermissionsRouteImport.update({
+    id: '/permissions',
+    path: '/permissions',
+    getParentRoute: () => AuthenticatedOrgSlugRoute,
+  } as any)
+const AuthenticatedOrgSlugMeRoute = AuthenticatedOrgSlugMeRouteImport.update({
+  id: '/me',
+  path: '/me',
+  getParentRoute: () => AuthenticatedOrgSlugRoute,
+} as any)
+const AuthenticatedOrgSlugDashboardRoute =
+  AuthenticatedOrgSlugDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => AuthenticatedOrgSlugRoute,
+  } as any)
+const AuthenticatedOrgSlugActivityRoute =
+  AuthenticatedOrgSlugActivityRouteImport.update({
+    id: '/activity',
+    path: '/activity',
+    getParentRoute: () => AuthenticatedOrgSlugRoute,
+  } as any)
+const AuthenticatedOrgSlugOrgSettingsRoute =
+  AuthenticatedOrgSlugOrgSettingsRouteImport.update({
+    id: '/org/settings',
+    path: '/org/settings',
+    getParentRoute: () => AuthenticatedOrgSlugRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/accounts': typeof AccountsRoute
-  '/budgets': typeof BudgetsRoute
-  '/dashboard': typeof DashboardRoute
-  '/login': typeof LoginRoute
-  '/register': typeof RegisterRoute
-  '/transactions': typeof TransactionsRoute
+  '/$orgSlug': typeof AuthenticatedOrgSlugRouteWithChildren
+  '/$orgSlug/activity': typeof AuthenticatedOrgSlugActivityRoute
+  '/$orgSlug/dashboard': typeof AuthenticatedOrgSlugDashboardRoute
+  '/$orgSlug/me': typeof AuthenticatedOrgSlugMeRoute
+  '/$orgSlug/permissions': typeof AuthenticatedOrgSlugPermissionsRoute
+  '/$orgSlug/roles': typeof AuthenticatedOrgSlugRolesRoute
+  '/$orgSlug/settings': typeof AuthenticatedOrgSlugSettingsRoute
+  '/$orgSlug/users': typeof AuthenticatedOrgSlugUsersRoute
+  '/org/create': typeof AuthenticatedOrgCreateRoute
+  '/auth/login': typeof PublicAuthLoginRoute
+  '/auth/register': typeof PublicAuthRegisterRoute
+  '/$orgSlug/org/settings': typeof AuthenticatedOrgSlugOrgSettingsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/accounts': typeof AccountsRoute
-  '/budgets': typeof BudgetsRoute
-  '/dashboard': typeof DashboardRoute
-  '/login': typeof LoginRoute
-  '/register': typeof RegisterRoute
-  '/transactions': typeof TransactionsRoute
+  '/$orgSlug': typeof AuthenticatedOrgSlugRouteWithChildren
+  '/$orgSlug/activity': typeof AuthenticatedOrgSlugActivityRoute
+  '/$orgSlug/dashboard': typeof AuthenticatedOrgSlugDashboardRoute
+  '/$orgSlug/me': typeof AuthenticatedOrgSlugMeRoute
+  '/$orgSlug/permissions': typeof AuthenticatedOrgSlugPermissionsRoute
+  '/$orgSlug/roles': typeof AuthenticatedOrgSlugRolesRoute
+  '/$orgSlug/settings': typeof AuthenticatedOrgSlugSettingsRoute
+  '/$orgSlug/users': typeof AuthenticatedOrgSlugUsersRoute
+  '/org/create': typeof AuthenticatedOrgCreateRoute
+  '/auth/login': typeof PublicAuthLoginRoute
+  '/auth/register': typeof PublicAuthRegisterRoute
+  '/$orgSlug/org/settings': typeof AuthenticatedOrgSlugOrgSettingsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/accounts': typeof AccountsRoute
-  '/budgets': typeof BudgetsRoute
-  '/dashboard': typeof DashboardRoute
-  '/login': typeof LoginRoute
-  '/register': typeof RegisterRoute
-  '/transactions': typeof TransactionsRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/_public': typeof PublicRouteWithChildren
+  '/_authenticated/$orgSlug': typeof AuthenticatedOrgSlugRouteWithChildren
+  '/_authenticated/$orgSlug/activity': typeof AuthenticatedOrgSlugActivityRoute
+  '/_authenticated/$orgSlug/dashboard': typeof AuthenticatedOrgSlugDashboardRoute
+  '/_authenticated/$orgSlug/me': typeof AuthenticatedOrgSlugMeRoute
+  '/_authenticated/$orgSlug/permissions': typeof AuthenticatedOrgSlugPermissionsRoute
+  '/_authenticated/$orgSlug/roles': typeof AuthenticatedOrgSlugRolesRoute
+  '/_authenticated/$orgSlug/settings': typeof AuthenticatedOrgSlugSettingsRoute
+  '/_authenticated/$orgSlug/users': typeof AuthenticatedOrgSlugUsersRoute
+  '/_authenticated/org/create': typeof AuthenticatedOrgCreateRoute
+  '/_public/auth/login': typeof PublicAuthLoginRoute
+  '/_public/auth/register': typeof PublicAuthRegisterRoute
+  '/_authenticated/$orgSlug/org/settings': typeof AuthenticatedOrgSlugOrgSettingsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/accounts'
-    | '/budgets'
-    | '/dashboard'
-    | '/login'
-    | '/register'
-    | '/transactions'
+    | '/$orgSlug'
+    | '/$orgSlug/activity'
+    | '/$orgSlug/dashboard'
+    | '/$orgSlug/me'
+    | '/$orgSlug/permissions'
+    | '/$orgSlug/roles'
+    | '/$orgSlug/settings'
+    | '/$orgSlug/users'
+    | '/org/create'
+    | '/auth/login'
+    | '/auth/register'
+    | '/$orgSlug/org/settings'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/accounts'
-    | '/budgets'
-    | '/dashboard'
-    | '/login'
-    | '/register'
-    | '/transactions'
+    | '/$orgSlug'
+    | '/$orgSlug/activity'
+    | '/$orgSlug/dashboard'
+    | '/$orgSlug/me'
+    | '/$orgSlug/permissions'
+    | '/$orgSlug/roles'
+    | '/$orgSlug/settings'
+    | '/$orgSlug/users'
+    | '/org/create'
+    | '/auth/login'
+    | '/auth/register'
+    | '/$orgSlug/org/settings'
   id:
     | '__root__'
     | '/'
-    | '/accounts'
-    | '/budgets'
-    | '/dashboard'
-    | '/login'
-    | '/register'
-    | '/transactions'
+    | '/_authenticated'
+    | '/_public'
+    | '/_authenticated/$orgSlug'
+    | '/_authenticated/$orgSlug/activity'
+    | '/_authenticated/$orgSlug/dashboard'
+    | '/_authenticated/$orgSlug/me'
+    | '/_authenticated/$orgSlug/permissions'
+    | '/_authenticated/$orgSlug/roles'
+    | '/_authenticated/$orgSlug/settings'
+    | '/_authenticated/$orgSlug/users'
+    | '/_authenticated/org/create'
+    | '/_public/auth/login'
+    | '/_public/auth/register'
+    | '/_authenticated/$orgSlug/org/settings'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AccountsRoute: typeof AccountsRoute
-  BudgetsRoute: typeof BudgetsRoute
-  DashboardRoute: typeof DashboardRoute
-  LoginRoute: typeof LoginRoute
-  RegisterRoute: typeof RegisterRoute
-  TransactionsRoute: typeof TransactionsRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  PublicRoute: typeof PublicRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/transactions': {
-      id: '/transactions'
-      path: '/transactions'
-      fullPath: '/transactions'
-      preLoaderRoute: typeof TransactionsRouteImport
+    '/_public': {
+      id: '/_public'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof PublicRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/register': {
-      id: '/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof RegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/budgets': {
-      id: '/budgets'
-      path: '/budgets'
-      fullPath: '/budgets'
-      preLoaderRoute: typeof BudgetsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/accounts': {
-      id: '/accounts'
-      path: '/accounts'
-      fullPath: '/accounts'
-      preLoaderRoute: typeof AccountsRouteImport
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -172,17 +233,149 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/$orgSlug': {
+      id: '/_authenticated/$orgSlug'
+      path: '/$orgSlug'
+      fullPath: '/$orgSlug'
+      preLoaderRoute: typeof AuthenticatedOrgSlugRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_public/auth/register': {
+      id: '/_public/auth/register'
+      path: '/auth/register'
+      fullPath: '/auth/register'
+      preLoaderRoute: typeof PublicAuthRegisterRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/auth/login': {
+      id: '/_public/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof PublicAuthLoginRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_authenticated/org/create': {
+      id: '/_authenticated/org/create'
+      path: '/org/create'
+      fullPath: '/org/create'
+      preLoaderRoute: typeof AuthenticatedOrgCreateRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/$orgSlug/users': {
+      id: '/_authenticated/$orgSlug/users'
+      path: '/users'
+      fullPath: '/$orgSlug/users'
+      preLoaderRoute: typeof AuthenticatedOrgSlugUsersRouteImport
+      parentRoute: typeof AuthenticatedOrgSlugRoute
+    }
+    '/_authenticated/$orgSlug/settings': {
+      id: '/_authenticated/$orgSlug/settings'
+      path: '/settings'
+      fullPath: '/$orgSlug/settings'
+      preLoaderRoute: typeof AuthenticatedOrgSlugSettingsRouteImport
+      parentRoute: typeof AuthenticatedOrgSlugRoute
+    }
+    '/_authenticated/$orgSlug/roles': {
+      id: '/_authenticated/$orgSlug/roles'
+      path: '/roles'
+      fullPath: '/$orgSlug/roles'
+      preLoaderRoute: typeof AuthenticatedOrgSlugRolesRouteImport
+      parentRoute: typeof AuthenticatedOrgSlugRoute
+    }
+    '/_authenticated/$orgSlug/permissions': {
+      id: '/_authenticated/$orgSlug/permissions'
+      path: '/permissions'
+      fullPath: '/$orgSlug/permissions'
+      preLoaderRoute: typeof AuthenticatedOrgSlugPermissionsRouteImport
+      parentRoute: typeof AuthenticatedOrgSlugRoute
+    }
+    '/_authenticated/$orgSlug/me': {
+      id: '/_authenticated/$orgSlug/me'
+      path: '/me'
+      fullPath: '/$orgSlug/me'
+      preLoaderRoute: typeof AuthenticatedOrgSlugMeRouteImport
+      parentRoute: typeof AuthenticatedOrgSlugRoute
+    }
+    '/_authenticated/$orgSlug/dashboard': {
+      id: '/_authenticated/$orgSlug/dashboard'
+      path: '/dashboard'
+      fullPath: '/$orgSlug/dashboard'
+      preLoaderRoute: typeof AuthenticatedOrgSlugDashboardRouteImport
+      parentRoute: typeof AuthenticatedOrgSlugRoute
+    }
+    '/_authenticated/$orgSlug/activity': {
+      id: '/_authenticated/$orgSlug/activity'
+      path: '/activity'
+      fullPath: '/$orgSlug/activity'
+      preLoaderRoute: typeof AuthenticatedOrgSlugActivityRouteImport
+      parentRoute: typeof AuthenticatedOrgSlugRoute
+    }
+    '/_authenticated/$orgSlug/org/settings': {
+      id: '/_authenticated/$orgSlug/org/settings'
+      path: '/org/settings'
+      fullPath: '/$orgSlug/org/settings'
+      preLoaderRoute: typeof AuthenticatedOrgSlugOrgSettingsRouteImport
+      parentRoute: typeof AuthenticatedOrgSlugRoute
+    }
   }
 }
 
+interface AuthenticatedOrgSlugRouteChildren {
+  AuthenticatedOrgSlugActivityRoute: typeof AuthenticatedOrgSlugActivityRoute
+  AuthenticatedOrgSlugDashboardRoute: typeof AuthenticatedOrgSlugDashboardRoute
+  AuthenticatedOrgSlugMeRoute: typeof AuthenticatedOrgSlugMeRoute
+  AuthenticatedOrgSlugPermissionsRoute: typeof AuthenticatedOrgSlugPermissionsRoute
+  AuthenticatedOrgSlugRolesRoute: typeof AuthenticatedOrgSlugRolesRoute
+  AuthenticatedOrgSlugSettingsRoute: typeof AuthenticatedOrgSlugSettingsRoute
+  AuthenticatedOrgSlugUsersRoute: typeof AuthenticatedOrgSlugUsersRoute
+  AuthenticatedOrgSlugOrgSettingsRoute: typeof AuthenticatedOrgSlugOrgSettingsRoute
+}
+
+const AuthenticatedOrgSlugRouteChildren: AuthenticatedOrgSlugRouteChildren = {
+  AuthenticatedOrgSlugActivityRoute: AuthenticatedOrgSlugActivityRoute,
+  AuthenticatedOrgSlugDashboardRoute: AuthenticatedOrgSlugDashboardRoute,
+  AuthenticatedOrgSlugMeRoute: AuthenticatedOrgSlugMeRoute,
+  AuthenticatedOrgSlugPermissionsRoute: AuthenticatedOrgSlugPermissionsRoute,
+  AuthenticatedOrgSlugRolesRoute: AuthenticatedOrgSlugRolesRoute,
+  AuthenticatedOrgSlugSettingsRoute: AuthenticatedOrgSlugSettingsRoute,
+  AuthenticatedOrgSlugUsersRoute: AuthenticatedOrgSlugUsersRoute,
+  AuthenticatedOrgSlugOrgSettingsRoute: AuthenticatedOrgSlugOrgSettingsRoute,
+}
+
+const AuthenticatedOrgSlugRouteWithChildren =
+  AuthenticatedOrgSlugRoute._addFileChildren(AuthenticatedOrgSlugRouteChildren)
+
+interface AuthenticatedRouteChildren {
+  AuthenticatedOrgSlugRoute: typeof AuthenticatedOrgSlugRouteWithChildren
+  AuthenticatedOrgCreateRoute: typeof AuthenticatedOrgCreateRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedOrgSlugRoute: AuthenticatedOrgSlugRouteWithChildren,
+  AuthenticatedOrgCreateRoute: AuthenticatedOrgCreateRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
+interface PublicRouteChildren {
+  PublicAuthLoginRoute: typeof PublicAuthLoginRoute
+  PublicAuthRegisterRoute: typeof PublicAuthRegisterRoute
+}
+
+const PublicRouteChildren: PublicRouteChildren = {
+  PublicAuthLoginRoute: PublicAuthLoginRoute,
+  PublicAuthRegisterRoute: PublicAuthRegisterRoute,
+}
+
+const PublicRouteWithChildren =
+  PublicRoute._addFileChildren(PublicRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AccountsRoute: AccountsRoute,
-  BudgetsRoute: BudgetsRoute,
-  DashboardRoute: DashboardRoute,
-  LoginRoute: LoginRoute,
-  RegisterRoute: RegisterRoute,
-  TransactionsRoute: TransactionsRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  PublicRoute: PublicRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

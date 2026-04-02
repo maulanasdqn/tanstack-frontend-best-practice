@@ -12,7 +12,7 @@ import {
   type RowSelectionState,
 } from '@tanstack/react-table'
 
-export type TableConfig<TData> = {
+export type TTableConfig<TData> = {
   data: TData[]
   columns: ColumnDef<TData>[]
   initialSorting?: SortingState

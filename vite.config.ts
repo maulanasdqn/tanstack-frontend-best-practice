@@ -14,7 +14,7 @@ const dirname =
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
-  plugins: [TanStackRouterVite(), tailwindcss(), react()],
+  plugins: [TanStackRouterVite({ routeFileIgnorePattern: '_components|_hooks|_data' }), tailwindcss(), react()],
   resolve: {
     alias: {
       '@': path.resolve(dirname, 'src'),

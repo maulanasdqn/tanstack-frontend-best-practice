@@ -2,22 +2,22 @@ import { useMutation, useQueryClient } from '@/libs/tanstack-query'
 import { authService } from './service'
 import { useAuthStore } from './store'
 import type {
-  LoginRequest,
-  RegisterRequest,
-  VerifyEmailRequest,
-  RequestPasswordResetRequest,
-  ResetPasswordRequest,
-  ChangePasswordRequest,
-  Verify2FARequest,
-  Disable2FARequest,
-  GoogleOAuthCallbackRequest,
+  TLoginRequest,
+  TRegisterRequest,
+  TVerifyEmailRequest,
+  TRequestPasswordResetRequest,
+  TResetPasswordRequest,
+  TChangePasswordRequest,
+  TVerify2FARequest,
+  TDisable2FARequest,
+  TGoogleOAuthCallbackRequest,
 } from './types'
 
 export function useLogin() {
   const { setAuth, setTokens } = useAuthStore()
 
   return useMutation({
-    mutationFn: (data: LoginRequest) => authService.login(data),
+    mutationFn: (data: TLoginRequest) => authService.login(data),
     onSuccess: (response) => {
       const { token, user, requires_2fa } = response.data.data
       if (!requires_2fa) {
@@ -30,13 +30,13 @@ export function useLogin() {
 
 export function useRegister() {
   return useMutation({
-    mutationFn: (data: RegisterRequest) => authService.register(data),
+    mutationFn: (data: TRegisterRequest) => authService.register(data),
   })
 }
 
 export function useVerifyEmail() {
   return useMutation({
-    mutationFn: (data: VerifyEmailRequest) => authService.verifyEmail(data),
+    mutationFn: (data: TVerifyEmailRequest) => authService.verifyEmail(data),
   })
 }
 
@@ -58,7 +58,6 @@ export function useLogout() {
       queryClient.clear()
     },
     onError: () => {
-      // Clear auth even if logout request fails
       clearAuth()
       queryClient.clear()
     },
@@ -80,20 +79,20 @@ export function useLogoutAll() {
 
 export function useRequestPasswordReset() {
   return useMutation({
-    mutationFn: (data: RequestPasswordResetRequest) =>
+    mutationFn: (data: TRequestPasswordResetRequest) =>
       authService.requestPasswordReset(data),
   })
 }
 
 export function useResetPassword() {
   return useMutation({
-    mutationFn: (data: ResetPasswordRequest) => authService.resetPassword(data),
+    mutationFn: (data: TResetPasswordRequest) => authService.resetPassword(data),
   })
 }
 
 export function useChangePassword() {
   return useMutation({
-    mutationFn: (data: ChangePasswordRequest) =>
+    mutationFn: (data: TChangePasswordRequest) =>
       authService.changePassword(data),
   })
 }
@@ -106,13 +105,13 @@ export function useEnable2FA() {
 
 export function useVerify2FA() {
   return useMutation({
-    mutationFn: (data: Verify2FARequest) => authService.verify2FA(data),
+    mutationFn: (data: TVerify2FARequest) => authService.verify2FA(data),
   })
 }
 
 export function useDisable2FA() {
   return useMutation({
-    mutationFn: (data: Disable2FARequest) => authService.disable2FA(data),
+    mutationFn: (data: TDisable2FARequest) => authService.disable2FA(data),
   })
 }
 
@@ -124,12 +123,11 @@ export function useGoogleAuth() {
       mutationFn: () => authService.getGoogleAuthUrl(),
     }),
     callback: useMutation({
-      mutationFn: (data: GoogleOAuthCallbackRequest) =>
+      mutationFn: (data: TGoogleOAuthCallbackRequest) =>
         authService.googleCallback(data),
       onSuccess: (response) => {
         const { access_token, refresh_token } = response.data.data
         setTokens(access_token, refresh_token)
-        // Note: User data would need to be fetched separately after OAuth
       },
     }),
   }
